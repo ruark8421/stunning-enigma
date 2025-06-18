@@ -1,33 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Multi-Month Calendar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --today-bg: #ffeb3b;
+      --today-color: #000;
+      --month-bg: #f0f0f0;
+      --border: #ccc;
+    }
 
-<body data-theme="light">
-  <h1>My Useful Links</h1>
-  <button class="theme-toggle" onclick="toggleTheme()">🌙 Toggle Dark Mode</button>
+    body {
+      font-family: sans-serif;
+      background: #ffffff;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-  <h2>Work Tools</h2>
-  <ul class="link-list">
-    <li><a href="https://github.com" target="_blank">GitHub</a></li>
-    <li><a href="https://stackoverflow.com" target="_blank">Stack Overflow</a></li>
-  </ul>
+    h1 {
+      margin-bottom: 20px;
+    }
 
-  <h2>AI & Learning</h2>
-  <ul class="link-list">
-    <li><a href="https://openai.com" target="_blank">OpenAI</a></li>
-    <li><a href="https://www.khanacademy.org" target="_blank">Khan Academy</a></li>
-  </ul>
+    .calendar-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+      max-width: 1200px;
+    }
 
-  <h2>General</h2>
-  <ul class="link-list">
-    <li><a href="https://example.com" target="_blank">Example Website</a></li>
-    <li><a href="https://wikipedia.org" target="_blank">Wikipedia</a></li>
-  </ul>
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .month {
+      background: var(--month-bg);
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      width: 220px;
+    }
+
+    .month h2 {
+      text-align: center;
+      margin: 5px 0 10px 0;
+      font-size: 18px;
+    }
+
+    .weekdays, .days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .weekdays div {
+      font-weight: bold;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 4px;
+    }
+
+    .days div {
+      padding: 4px;
+    }
+
+    .today {
+      background: var(--today-bg);
+      color: var(--today-color);
+      border-radius: 50%;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Five-Month Calendar View</h1>
+  <div class="calendar-container" id="calendar"></div>
 
   <script>
-    function toggleTheme() {
-      const current = document.body.getAttribute('data-theme');
-      document.body.setAttribute('data-theme', current === 'light' ? 'dark' : 'light');
+    function generateCalendar(monthOffset) {
+      const today = new Date();
+      const date = new Date(today.getFullYear(), today.getMonth() + monthOffset, 1);
+      const year = date.getFullYear();
+      const month = date.getMonth();
+
+      const firstDay = new Date(year, month, 1).getDay(); // 0 = Sunday
+      const lastDate = new Date(year, month + 1, 0).getDate();
+
+      const isCurrentMonth = month === today.getMonth() && year === today.getFullYear();
+
+      const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+
+      let html = `<div class="month"><h2>${monthNames[month]} ${year}</h2>`;
+      html += `<div class="weekdays">
+                 <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div>
+                 <div>Thu</div><div>Fri</div><div>Sat</div>
+               </div><div class="days">`;
+
+      for (let i = 0; i < firstDay; i++) {
+        html += `<div></div>`;
+      }
+
+      for (let d = 1; d <= lastDate; d++) {
+        const isToday = isCurrentMonth && d === today.getDate();
+        html += `<div class="${isToday ? 'today' : ''}">${d}</div>`;
+      }
+
+      html += `</div></div>`;
+      return html;
     }
+
+    const container = document.getElementById("calendar");
+
+    // Top row: two previous months
+    const topRow = document.createElement("div");
+    topRow.className = "row";
+    topRow.innerHTML = generateCalendar(-2) + generateCalendar(-1);
+    container.appendChild(topRow);
+
+    // Middle row: current month
+    const middleRow = document.createElement("div");
+    middleRow.className = "row";
+    middleRow.innerHTML = generateCalendar(0);
+    container.appendChild(middleRow);
+
+    // Bottom row: next two months
+    const bottomRow = document.createElement("div");
+    bottomRow.className = "row";
+    bottomRow.innerHTML = generateCalendar(1) + generateCalendar(2);
+    container.appendChild(bottomRow);
   </script>
 </body>
 </html>
