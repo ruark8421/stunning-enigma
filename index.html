@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Links Page</title>
+  <style>
+    :root {
+      --bg-color: #f9f9f9;
+      --text-color: #333;
+      --link-bg: #ffffff;
+      --link-hover-bg: #e6f0ff;
+      --link-color: #0066cc;
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #1e1e1e;
+      --text-color: #e0e0e0;
+      --link-bg: #2c2c2c;
+      --link-hover-bg: #444;
+      --link-color: #66aaff;
+    }
+
+    body {
+      font-family: sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    .theme-toggle {
+      margin-bottom: 30px;
+    }
+
+    h2 {
+      margin-top: 30px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 5px;
+    }
+
+    ul.link-list {
+      list-style-type: none;
+      padding: 0;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .link-list li {
+      margin: 10px 0;
+    }
+
+    .link-list a {
+      display: block;
+      background: var(--link-bg);
+      border: 1px solid #ddd;
+      padding: 12px 20px;
+      text-decoration: none;
+      color: var(--link-color);
+      border-radius: 8px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .link-list a:hover {
+      background: var(--link-hover-bg);
+    }
+  </style>
+</head>
+<body data-theme="light">
+  <h1>Useful Links</h1>
+  <button class="theme-toggle" onclick="toggleTheme()">🌙 Toggle Dark Mode</button>
+
+  <h2>Work Tools</h2>
+  <ul class="link-list">
+    <li><a href="https://github.com" target="_blank">GitHub</a></li>
+    <li><a href="https://stackoverflow.com" target="_blank">Stack Overflow</a></li>
+  </ul>
+
+  <h2>AI & Learning</h2>
+  <ul class="link-list">
+    <li><a href="https://openai.com" target="_blank">OpenAI</a></li>
+    <li><a href="https://www.khanacademy.org/" target="_blank">Khan Academy</a></li>
+  </ul>
+
+  <h2>General</h2>
+  <ul class="link-list">
+    <li><a href="https://example.com" target="_blank">Example Website</a></li>
+    <li><a href="https://wikipedia.org" target="_blank">Wikipedia</a></li>
+  </ul>
+
+  <script>
+    function toggleTheme() {
+      const currentTheme = document.body.getAttribute("data-theme");
+      const newTheme = currentTheme === "light" ? "dark" : "light";
+      document.body.setAttribute("data-theme", newTheme);
+    }
+  </script>
+</body>
+</html>
+
